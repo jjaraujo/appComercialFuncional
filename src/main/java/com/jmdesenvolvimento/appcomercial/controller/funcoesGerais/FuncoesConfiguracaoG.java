@@ -2,6 +2,7 @@ package com.jmdesenvolvimento.appcomercial.controller.funcoesGerais;
 
 import com.jmdesenvolvimento.appcomercial.model.dao.IConnection;
 import com.jmdesenvolvimento.appcomercial.model.Configuracoes;
+import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
 
 public class FuncoesConfiguracaoG {
 

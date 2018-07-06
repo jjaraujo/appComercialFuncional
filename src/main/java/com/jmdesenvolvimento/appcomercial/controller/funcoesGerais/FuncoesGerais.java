@@ -12,7 +12,10 @@ import java.util.HashMap;
 import java.util.Set;
 
 import com.jmdesenvolvimento.appcomercial.controller.TabelasMapeadas;
+import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
+import com.jmdesenvolvimento.appcomercial.model.dao.IConnection;
+import com.jmdesenvolvimento.appcomercial.model.entidades.vendas.Venda;
 
 /**Aqui ficam as funÃƒÂ§ÃƒÂµes que servem para Android e Java*/
 public final class FuncoesGerais {
@@ -21,6 +24,32 @@ public final class FuncoesGerais {
     public static final String yyyyMMdd_HHMMSS = "yyyy-MM-dd hh:mm:ss";
     public static final String ddMMyyyy = "dd/MM/yyyy";
     public static final String yyyyMMdd = "yyyy-MM-dd";
+    
+    public static int getIdUnico() {
+    	int idEmpresa = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
+    	int i = (int) Math.random() * 10;
+    	int i2 = (int) Math.random();
+    	String idFuncionario = VariaveisControleG.funcionarioLogado == null ? i + "" : VariaveisControleG.funcionarioLogado.getId() + "";
+    	long intAnt = (+new GregorianCalendar().getTimeInMillis());
+    	String ss = String.valueOf(intAnt);
+    	String s = ss.substring(ss.length() - 5,ss.length());
+    	return Integer.parseInt(idEmpresa + idFuncionario + i2 + s);
+    }
+    
+    public static int getIdUnicoVenda() {
+    	int idEmpresa = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
+    	double i = Math.random();
+    	long intAnt = (+new GregorianCalendar().getTimeInMillis());
+    	String ss = String.valueOf(intAnt);
+    	String s = ss.substring(ss.length() - 4,ss.length());
+    	String idVendedor = VariaveisControleG.funcionarioLogado == null ? addZeros(Integer.parseInt(s), 4) : VariaveisControleG.funcionarioLogado.getId() + "";
+    	IConnection iConnection = VariaveisControleG.iConnection;
+    	int id = iConnection.countIdEntidade(new Venda()) + 1;
+    	return Integer.parseInt(idEmpresa + idVendedor + id) ;
+    	//191501153408
+    	//1914016153911
+    	//199018153652
+    }
 
     public static String corrigeValoresCampos(String s) {
         if (s == null) {
@@ -141,18 +170,6 @@ public final class FuncoesGerais {
             return false;
         }
         return f.getType().getSuperclass().toString().toLowerCase().trim().contains("entidade");
-    }
-
-    public static boolean isTabela(Object o) {
-        try{
-            Tabela t = (Tabela) o;
-            t.getId(); // forÃƒÂ§a um nullpointer caso converta
-            return true;
-        } catch (  NullPointerException e ){
-            return false;
-        }catch (ClassCastException e ){
-            return false;
-        }
     }
 
 //    public static String prefixoChaveEstrangeira() {
@@ -326,8 +343,10 @@ public final class FuncoesGerais {
     }
 
     public static Tabela getFieldTypeTabela(Tabela objectTabela, Field field){
-        try {
-            Tabela tabela = instanciaTabelaPorField(field);
+    	Tabela tabela = instanciaTabelaPorField(field);
+    	
+    	try {
+            
             Field tabelaField = objectTabela.getClass().getDeclaredField(tabela.getNomeTabela(true).trim());
             tabelaField.setAccessible(true);
 
@@ -335,7 +354,25 @@ public final class FuncoesGerais {
 
         }catch (NoSuchFieldException e) {
  //           Log.i("NoSuchFieldException", "Erro ao buscar atributo " + field.getName() + " na TABELA " + objectTabela.getNomeTabela(false));
-            e.printStackTrace();
+        	Field tabelaField;
+			try {
+				tabelaField = objectTabela.getClass().getField(tabela.getNomeTabela(true).trim());
+				tabelaField.setAccessible(true);
+				 return (Tabela) tabelaField.get(objectTabela);
+			} catch (NoSuchFieldException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SecurityException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalArgumentException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+            
         } catch (NullPointerException e) { 
   //          Log.i("NullPointerException", "Erro ao buscar atributo " + field.getName() + " - TABELA " + objectTabela.getNomeTabela(false));
             e.printStackTrace();

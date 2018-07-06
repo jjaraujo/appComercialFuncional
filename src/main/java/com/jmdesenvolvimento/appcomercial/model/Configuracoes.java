@@ -13,6 +13,7 @@ public class Configuracoes extends Tabela{
     private boolean vendaSemEstoque;
     private String nomeTipoVenda;
     private int numeroDeMesasComandas;
+    private String activityInicial;
 
 
 
@@ -70,5 +71,9 @@ public class Configuracoes extends Tabela{
 
     public void setNumeroDeMesasComandas(int numeroDeMesasComandas) {
         this.numeroDeMesasComandas = numeroDeMesasComandas;
+    }
+    
+    public String getActivityInicial() {
+    	return this.activityInicial;
     }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
 
-public class Fornecedor  extends Tabela {
+public class Fornecedor  extends APessoa{
 
     public Pessoa getPessoa() {
         if(pessoa == null){
@@ -14,11 +14,6 @@ public class Fornecedor  extends Tabela {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
-
-    private Pessoa pessoa;
 
 //    @Override
 //    public void setMapAtributos(HashMap<String, Object> map) {

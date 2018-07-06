@@ -9,6 +9,8 @@ import com.jmdesenvolvimento.appcomercial.model.entidades.contas.ContaReceber;
 import com.jmdesenvolvimento.appcomercial.model.entidades.vendas.Venda;
 import com.jmdesenvolvimento.appcomercial.model.tabelasIntermediarias.TabelaPagamento;
 import com.jmdesenvolvimento.appcomercial.model.tabelasIntermediarias.TabelaParcelasPagamento;
+import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
+
 
 public final class FuncoesVendasG {
 

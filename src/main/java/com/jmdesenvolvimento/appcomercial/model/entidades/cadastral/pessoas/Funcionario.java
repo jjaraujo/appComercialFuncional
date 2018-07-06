@@ -1,25 +1,54 @@
 package com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas;
 
+
 import java.util.HashMap;
 import java.util.List;
 
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
+import com.jmdesenvolvimento.appcomercial.model.entidades.Entidade;
 
-public class Funcionario  extends Tabela{
+public class Funcionario  extends APessoa{
 
-    private Pessoa pessoa;
+    private double comissao;
+    private String usuario;
+    private String senha;
 
 //    @Override
 //    public void setMapAtributos(HashMap<String, Object> map) {
-//        pessoa = (Pessoa) map.get(pessoa.getIdNome());
+//        id = (int) map.get("id_vendedor");
+//        pessoa = (Pessoa) map.get("pessoa");
+//        comissao = (double) map.get("comissao");
+//        usuario = (String) map.get("usuario");
+//        senha = (String) map.get("senha");
 //    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
+    
+    @Override
+    public int getId() {
+    	return id;
+    }
+    
+    public Double getComissao(){
+        return this.comissao;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setComissao(double comissao) {
+        this.comissao = comissao;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
 	@Override

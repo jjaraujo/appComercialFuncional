@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.jmdesenvolvimento.appcomercial.controller.FuncoesSql;
+import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
 import com.jmdesenvolvimento.appcomercial.controller.funcoesGerais.FuncoesGerais;
 import com.jmdesenvolvimento.appcomercial.controller.funcoesGerais.VerificaTipos;
 import com.jmdesenvolvimento.appcomercial.model.entidades.Entidade;
@@ -23,10 +24,10 @@ public abstract class Tabela implements Serializable {
 	public abstract List<Tabela> getListValoresIniciais();
 
 	private HashMap<String, Object> map;
-
+		
 	public int id;
 
-	public int empresaCliente;
+	public int empresaCliente = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId() ;
 
 	public Calendar dataExclusao;
 
@@ -37,6 +38,7 @@ public abstract class Tabela implements Serializable {
 	}
 
 	public int getId() {
+		id = id == 0 ? FuncoesGerais.getIdUnico() : id;
 		return id;
 	}
 
@@ -53,6 +55,7 @@ public abstract class Tabela implements Serializable {
 	}
 
 	public int getEmpresaCliente() {
+		empresaCliente = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
 		return empresaCliente;
 	}
 

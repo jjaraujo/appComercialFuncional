@@ -22,7 +22,6 @@ import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas.Clie
 import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas.EmpresaCliente;
 import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas.Fornecedor;
 import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas.Pessoa;
-import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas.Vendedor;
 import com.jmdesenvolvimento.appcomercial.model.entidades.contas.ContaReceber;
 import com.jmdesenvolvimento.appcomercial.model.entidades.estoque.Cfop;
 import com.jmdesenvolvimento.appcomercial.model.entidades.estoque.Csons;
@@ -100,7 +99,7 @@ public abstract class FuncoesSql {
 		String sql;
 		String nomeTipo = "";
 		if (!nomeColuna.toLowerCase().equals(tabela.getIdNome().toLowerCase())) {
-			if (FuncoesGerais.isTabela(object)) { // caso a coluna seja uma entidade
+			if (VerificaTipos.isTabela(object)) { // caso a coluna seja uma entidade
 				nomeTipo = tipoSql == SQLITE ? " INTEGER " : " INT ";
 			} else {
 				if (VerificaTipos.isText(object, null)) {
@@ -151,7 +150,7 @@ public abstract class FuncoesSql {
 		HashMap<String, Object> map = tabela.getMapAtributos(true);
 
 		map.put(tabela.getDataExclusaoNome(), tabela.getDataExclusao());
-		String sql = montaSqlInsert(map, tabela.getNomeTabela(false),tipoSql);
+		String sql = montaSqlInsert(tabela,tipoSql);
 		db.execSQL(sql);
 	}
 	
@@ -174,7 +173,7 @@ public abstract class FuncoesSql {
 			String nomeTipo = type.toString().replace("class ", "");
 			Object o = map.get(nomeColuna);
 			
-			if (FuncoesGerais.isTabela(map.get(nomeColuna))) {
+			if (VerificaTipos.isTabela(map.get(nomeColuna))) {
 				int idTabela = cursor.getInt(nomeColuna);
 
 				if (idTabela > 0) { // buscará entidade somente se id > 0
@@ -273,10 +272,11 @@ public abstract class FuncoesSql {
 	 * @param nomeTabela - informar o nome da tabela. Pode ser adquirido pelo metodo tabela.getNomeTabela()
 	 * @param tipoSql - Informar o tipo de sql, já definidos como fields static
 	 * @return Retorna o SQL montado pronto para execução*/
-	public static String montaSqlInsert(HashMap<String, Object> map, String nomeTablea, int tipoSql) {
-
-		String sql = tipoSql == SQL_SERVER ? " SET IDENTITY_INSERT "+nomeTablea+" ON; " : "";
-		sql += " INSERT INTO " + nomeTablea;
+	public static String montaSqlInsert(Tabela tabela, int tipoSql) {
+		String nomeTabela = tabela.getNomeTabela(false);
+		HashMap<String, Object> map = tabela.getMapAtributos(false);
+		String sql = tipoSql == SQL_SERVER ? " SET IDENTITY_INSERT "+nomeTabela+" ON; " : "";
+		sql += " INSERT INTO " + nomeTabela;
 		String colunas = "(";
 		String valores = "(";
 		for (String s : map.keySet()) {
@@ -295,7 +295,7 @@ public abstract class FuncoesSql {
 				valores += ", "
 						+ FuncoesGerais.calendarToString((Calendar) atributo, FuncoesGerais.yyyyMMdd_HHMMSS, true);
 
-			} else if (FuncoesGerais.isTabela(atributo)) {
+			} else if (VerificaTipos.isTabela(atributo)) {
 				Tabela e = (Tabela) atributo;
 				colunas += ", " + s;
 				valores += ", " + e.getId();
@@ -314,7 +314,7 @@ public abstract class FuncoesSql {
 		valores = valores.replace("(,", "(");
 		colunas = colunas.replace("(,", "(") + ")";
 		sql += colunas + " VALUES " + valores + ");";
-		sql += tipoSql == SQL_SERVER ? " SET IDENTITY_INSERT "+nomeTablea+" OFF; " : "";
+		sql += tipoSql == SQL_SERVER ? " SET IDENTITY_INSERT "+nomeTabela+" OFF; " : "";
 		return sql;
 	}
 	
@@ -346,7 +346,7 @@ public abstract class FuncoesSql {
 				String dps = FuncoesGerais.removeCaracteresEspeciais((String) map.get(s));
 				colunas += s + " = '" + dps + "',";
 
-			} else if (FuncoesGerais.isTabela(map.get(s))) {
+			} else if (VerificaTipos.isTabela(map.get(s))) {
 				Entidade e = (Entidade) atributo;
 				colunas += s + " = " + e.getId() + ",";
 			} else if (VerificaTipos.isCalendar(map.get(s), null)) {

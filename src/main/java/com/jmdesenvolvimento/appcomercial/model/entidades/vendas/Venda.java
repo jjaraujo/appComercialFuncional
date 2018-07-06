@@ -3,16 +3,17 @@ package com.jmdesenvolvimento.appcomercial.model.entidades.vendas;
 import java.util.Calendar;
 import java.util.List;
 
+import com.jmdesenvolvimento.appcomercial.controller.funcoesGerais.FuncoesGerais;
 import com.jmdesenvolvimento.appcomercial.model.entidades.Entidade;
 import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas.Cliente;
-import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas.Vendedor;
+import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas.Funcionario;
 import com.jmdesenvolvimento.appcomercial.model.tabelasIntermediarias.TabelaPagamento;
 import com.jmdesenvolvimento.appcomercial.model.tabelasIntermediarias.TabelaProdutosVenda;
 
 public class Venda extends Entidade {
 
     private Cliente cliente;
-    private Vendedor vendedor;
+    private Funcionario funcionario;
     private int numeroMesaComanda;
     private List<TabelaProdutosVenda> tabelaProdutosVenda;
     private Calendar dataRegistro;
@@ -28,6 +29,12 @@ public class Venda extends Entidade {
 
     public Venda(){
 
+    }
+    
+    @Override
+    public int getId() {
+ 
+    	return id == 0 ? FuncoesGerais.getIdUnicoVenda() : id;
     }
 
 //    @Override
@@ -53,12 +60,12 @@ public class Venda extends Entidade {
         this.cliente = cliente;
     }
 
-    public Vendedor getVendedor() {
-        return vendedor;
+    public Funcionario getFuncionario() {
+        return funcionario;
     }
 
-    public void setVendedor(Vendedor vendedor) {
-        this.vendedor = vendedor;
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 
     public List<TabelaProdutosVenda> getTabelaProdutosVenda() {
@@ -134,4 +141,6 @@ public class Venda extends Entidade {
     public String toString() {
         return getId() + " - EmpresaCliente: " + cliente.getId();
     }
+    
+    
 }

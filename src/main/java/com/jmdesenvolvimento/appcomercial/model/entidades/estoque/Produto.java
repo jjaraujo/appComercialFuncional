@@ -10,7 +10,7 @@ import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas.Forn
 
 public class Produto extends Entidade implements Serializable{
 
-    private String nome_produto;
+	private String nome_produto;
     private long codigoBarras;
     private String descricao;
     private Unidade unidade;
@@ -65,6 +65,12 @@ public class Produto extends Entidade implements Serializable{
     @Override
     public String toString() {
         return id + " " + nome_produto;
+    }
+    
+    @Override
+    public int getId() {
+    	
+    	return id;
     }
 
     public String getNome_produto() {

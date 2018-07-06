@@ -4,20 +4,12 @@ package com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.pessoas;
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
 import java.util.List;
 
-public class Cliente extends Tabela{
+public class Cliente extends APessoa{
 
-    private Pessoa pessoa;
+    
     private double limite;
     private String ultimaVenda;
 
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
 
     public double getLimite() {
         return limite;

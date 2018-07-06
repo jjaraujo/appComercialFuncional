@@ -42,6 +42,18 @@ public final class VerificaTipos {
             return false;
         }
     }
+    
+    public static boolean isTabela(Object o) {
+        try{
+            Tabela t = (Tabela) o;
+            t.getId(); // forÃ§a um nullpointer caso converta
+            return true;
+        } catch (  NullPointerException e ){
+            return false;
+        }catch (ClassCastException e ){
+            return false;
+        }
+    }
 
     public static boolean isCalendar(Object object, Field field){
         try{

@@ -6,10 +6,11 @@ import com.jmdesenvolvimento.appcomercial.model.entidades.Entidade;
 import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.Estado;
 import com.jmdesenvolvimento.appcomercial.model.entidades.cadastral.Municipio;
 
-public class Pessoa extends Entidade{
+public class Pessoa extends Entidade {
   //  public abstract void setNome_pessoa();
 
-    private String nome_pessoa;
+    private String nomePessoa;
+    private String nomeFantasia;
     private int sexo;
     private String logradouro;
     private String bairro;
@@ -24,12 +25,21 @@ public class Pessoa extends Entidade{
     private String telefone2;
     private String email;
 
+    
     public String getNome() {
-        return nome_pessoa;
+        return nomePessoa;
     }
 
     public void setNome(String nome) {
-        this.nome_pessoa = nome;
+        this.nomePessoa = nome;
+    }
+    
+    public String getFantasia() {
+        return nomeFantasia;
+    }
+
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia;
     }
 
     public Integer getSexo() {
@@ -138,7 +148,7 @@ public class Pessoa extends Entidade{
 
     @Override
     public String toString() {
-        return this.id + " - " + this.nome_pessoa;
+        return this.id + " - " + this.nomePessoa;
         //+ " - " + this.email;
     }
 

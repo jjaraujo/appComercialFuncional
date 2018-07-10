@@ -13,6 +13,7 @@ import com.jmdesenvolvimento.appcomercial.controller.funcoesGerais.FuncoesGerais
 import com.jmdesenvolvimento.appcomercial.controller.funcoesGerais.VerificaTipos;
 import com.jmdesenvolvimento.appcomercial.model.Configuracoes;
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
+import com.jmdesenvolvimento.appcomercial.model.TabelasMapeadas;
 import com.jmdesenvolvimento.appcomercial.model.dao.IConnection;
 import com.jmdesenvolvimento.appcomercial.model.dao.IRegistros;
 import com.jmdesenvolvimento.appcomercial.model.entidades.Entidade;
@@ -62,51 +63,76 @@ public abstract class FuncoesSql {
 		calendar.setTimeInMillis(0);
 		for (int i = 0; i < tabelas.length; i++) {
 			Tabela tabela = tabelas[i];
-			String ifExists = tipoSql == SQL_SERVER ?
-					"IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '"+tabela.getNomeTabela(false)+ "') "
-							+ " BEGIN "
-							+ " CREATE TABLE "	: 
-							" CREATE TABLE IF NOT EXISTS ";
-			String sql = ifExists + tabela.getCaminhoTabelaBanco(tipoSql) + "(";
-
-			String[] nomeAtributos = tabelas[i].getNomesAtributos();
-			// verificar a possibilidade de pegar esses nomes direto do map
-			for (int j = 0; j < nomeAtributos.length; j++) {
-				String nome = nomeAtributos[j];
-				Object atributo = FuncoesGerais.getValorFieldDeTabela(nome, tabelas[i]);
-				if (nome == null) {
-					continue;
-				}
-				sql += "," + substituiTiposVariaveisCreateDatabase(nomeAtributos[j], tabelas[i], atributo, tipoSql);
-			}
-			sql = sql.replace("(,", "(");
-			sql = sql + ");";
-			sql += tipoSql == SQL_SERVER ? " END;" : "";
-			System.out.println(sql);
-			db.execSQL(sql);
-			insereRegistrosIniciais(db, tabelas[i], tipoSql);
+			createTable(db, tabela, tipoSql);
 		}
 	}
+	
+	public static void createTable(IConnection db, Tabela tabela, int tipoSql) {
+		String ifExists = tipoSql == SQL_SERVER ?
+				"IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '"+tabela.getNomeTabela(false)+ "') "
+						+ " BEGIN "
+						+ " CREATE TABLE "	: 
+						" CREATE TABLE IF NOT EXISTS ";
+		String sql = ifExists + tabela.getCaminhoTabelaBanco(tipoSql) + "(";
+
+		String[] nomeAtributos = tabela.getNomesAtributos();
+		// verificar a possibilidade de pegar esses nomes direto do map
+		for (int j = 0; j < nomeAtributos.length; j++) {
+			String nome = nomeAtributos[j];
+			Object atributo = FuncoesGerais.getValorFieldDeTabela(nome, tabela);
+			if (nome == null) {
+				continue;
+			}
+			sql += "," + substituiTiposVariaveisCreateTable(nomeAtributos[j], tabela, atributo, tipoSql);
+		}
+		sql = sql.replace("(,", "(");
+		sql = sql + ");";
+		sql += tipoSql == SQL_SERVER ? " END;" : "";
+		System.out.println(sql);
+		db.execSQL(sql);
+		insereRegistrosIniciais(db, tabela, tipoSql);
+	
+	}
+	
+	
+	private String altersTable(Tabela tabela) {
+		List<String> list = tabela.alterTableAposCriacao();
+		
+		if(list == null)
+			return "";
+		
+		String s = "";
+		for(String alter : list) {
+			s += alter;
+		}
+		
+		return s;
+	}
+	
 	
 	
 	/**Substitui os tipos de variaveis para a criação da tabela no banco. Ex: se String, criará um varchar(100)
 	 * @param nomeColuna - Informar o nome da coluna que será criada (pode ser um field de tabela ou a chave do map) 
 	 * @param tabela - Informar a tabela que está sendo criada
-	 * @param object - Informar o valor da coluna, com o qual será verificado qual o tipo de variável
+	 * @param objetoValorDaColuna - Informar o valor da coluna, com o qual será verificado qual o tipo de variável
 	 * @param tipoSql - Informar o tipo de sql, já definidos como fields static
 	 * @return Retorna o trecho de SQL referente a coluna. EX: id_tabela_pk VARCHAR(100) PRIMARY KEY NOT NULL*/
-	private static String substituiTiposVariaveisCreateDatabase(String nomeColuna, Tabela tabela, Object object, int tipoSql) {
+	private static String substituiTiposVariaveisCreateTable(String nomeColuna, Tabela tabela, Object objetoValorDaColuna, int tipoSql) {
+		
+		if(FuncoesGerais.getFieldDeTabela(nomeColuna, tabela).isAnnotationPresent(NaoUsar.class))
+			return "";
+		
 		String sql;
 		String nomeTipo = "";
 		if (!nomeColuna.toLowerCase().equals(tabela.getIdNome().toLowerCase())) {
-			if (VerificaTipos.isTabela(object)) { // caso a coluna seja uma entidade
+			if (VerificaTipos.isTabela(objetoValorDaColuna)) { // caso a coluna seja uma entidade
 				nomeTipo = tipoSql == SQLITE ? " INTEGER " : " INT ";
 			} else {
-				if (VerificaTipos.isText(object, null)) {
+				if (VerificaTipos.isText(objetoValorDaColuna, null)) {
 					nomeTipo =  tipoSql == SQLITE ? " TEXT " : " VARCHAR(100) ";
-				} else if (VerificaTipos.isDouble(object, null)) {
+				} else if (VerificaTipos.isDouble(objetoValorDaColuna, null)) {
 					nomeTipo =  tipoSql == SQLITE ?  " REAL " : " FLOAT ";
-				} else if (VerificaTipos.isInteger(object, null)) {
+				} else if (VerificaTipos.isInteger(objetoValorDaColuna, null) || VerificaTipos.isLong(objetoValorDaColuna, null)) {
 					nomeTipo = tipoSql == SQLITE ? " INTEGER " : "  INT ";
 				}
 			}
@@ -127,7 +153,7 @@ public abstract class FuncoesSql {
 	private static void insereRegistrosIniciais(IConnection db, Tabela tabela, int tipoSql) {
 
 		if (tabela.getPrecisaRegistroInicial()) {
-			if (tabela.getListValoresIniciais() == null || tabela.getListValoresIniciais().isEmpty()) {
+			if (tabela.getListValoresIniciais() == null || tabela.getListValoresIniciais().isEmpty() || !tabela.usaInsert()) {
 				return;
 			}
 
@@ -165,10 +191,11 @@ public abstract class FuncoesSql {
 	 * @param cursor - Informar o cursor que contem o registros de acordo com a plataforma de desenvolvimento
 	 * @return Retorna o @param map com o valor da coluna
 	 */
-	public static HashMap<String, Object> verificaTiposColunas(IConnection con, String nomeColuna, HashMap<String, Object> map, int i, Tabela tabela, IRegistros cursor) {
-
-		try {
-			
+	public static HashMap<String, Object> addColunaSqlNoMap(IConnection con, String nomeColuna, int i, Tabela tabela, IRegistros cursor) {
+		
+		HashMap<String, Object> map = tabela.getMapAtributos(false);
+		
+		try {	
 			Type type = map.get(nomeColuna).getClass();
 			String nomeTipo = type.toString().replace("class ", "");
 			Object o = map.get(nomeColuna);
@@ -200,6 +227,7 @@ public abstract class FuncoesSql {
 				map.put(nomeColuna, FuncoesGerais.corrigeValoresCamposLong(cursor.getLong(nomeColuna)));
 
 			} else if (VerificaTipos.isList(o, null)) {
+				
 				Field listField = FuncoesGerais.getFieldDeTabela(nomeColuna, tabela);
 				ParameterizedType listFieldGenericType = (ParameterizedType) listField.getGenericType();
 				Class<?> stringListClass = (Class<?>) listFieldGenericType.getActualTypeArguments()[0];
@@ -207,6 +235,7 @@ public abstract class FuncoesSql {
 				Tabela novaTabela = TabelasMapeadas.getTabelaForNome(nomeClassTabela, false);
 				List list = con.selectAll(novaTabela, tabela.getNomeTabela(true) + " = " + tabela.getId(), false);
 				map.put(nomeColuna, list);
+				
 			} else if (VerificaTipos.isCalendar(o, null)) {
 				map.put(nomeColuna,
 						FuncoesGerais.corrigeValoresCalendar(cursor.getString(nomeColuna), FuncoesGerais.yyyyMMdd_HHMMSS));
@@ -229,26 +258,25 @@ public abstract class FuncoesSql {
 	 * @param map - informar o map da tabela que está sendo buscada dos registros. 
 	 * @return Tabela com os valores já setados no map
 	 */
-	public static Tabela valoresSqlParaMap(IConnection con, IRegistros cursor, HashMap<String, Object> map, Tabela tabela) {
-
-		
+	public static Tabela percorreColunasSqlEAdicionaNoMap(IConnection con, IRegistros cursor, Tabela tabela) {
+		HashMap<String, Object> map = tabela.getMapAtributos(false);
 		int colunas = cursor.getColumnCount();
 		for (int i = 0; i < colunas; i++) {
 
-			String nomeColuna =  cursor.get(i);
+			String nomeColuna =  cursor.getNomeColuna(i);
 			try {
 				if (!map.containsKey(nomeColuna)) {// || map.get(nomeColuna) == null) {
 					continue;
 				}
 
-				FuncoesSql.verificaTiposColunas(con, nomeColuna, map, i, tabela, cursor);
+				FuncoesSql.addColunaSqlNoMap(con, nomeColuna,i, tabela, cursor);
 
 			} catch (NullPointerException e) {
 				// Log.i("Coluna nula",nomeColuna);
 				e.printStackTrace();
 			}
 		}
-			Tabela novaTabela = TabelasMapeadas.getTabelaForNome(tabela.getClass().getName(), false);
+			Tabela novaTabela = FuncoesGerais.getNovaInstanciaTabela(tabela.getNomeCompletoTabela());
 			novaTabela.setMapAtributos(map);
 			// tabela.setMapAtributos(map);
 		//	cursor.close();
@@ -306,7 +334,7 @@ public abstract class FuncoesSql {
 			} else if (VerificaTipos.isDouble(atributo, null)) { // caso seja real ou integer
 				colunas += ", " + s;
 				valores += ", " + atributo;
-			} else if (VerificaTipos.isInt(atributo, null)) { // caso seja real ou integer
+			} else if (VerificaTipos.isInt(atributo, null) || VerificaTipos.isLong(atributo, null)) { // caso seja real ou integer
 				colunas += ", " + s;
 				valores += ", " + atributo;
 			}

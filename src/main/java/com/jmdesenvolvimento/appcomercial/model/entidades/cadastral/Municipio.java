@@ -10,6 +10,11 @@ public class Municipio extends Entidade implements Serializable {
 
 	private String nome_municipio;
 	private Estado estado;
+	
+	@Override
+	public long getId() {
+		return id;
+	}
 
 	public String getNome() {
 		return nome_municipio;
@@ -22,6 +27,11 @@ public class Municipio extends Entidade implements Serializable {
 	}
 	public void setEstado(Estado estado) {
 		this.estado = estado;
+	}
+	
+	@Override
+	public boolean usaInsert() {
+		return false;
 	}
 
 //	@Override

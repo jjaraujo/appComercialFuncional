@@ -7,7 +7,7 @@ import com.jmdesenvolvimento.appcomercial.model.entidades.estoque.Produto;
 
 public class TabelaProdutosVenda extends TabelaIntermediaria {
 
-    private int venda;
+    private long venda;
     private Produto produto;
     private int qtd;
     private Calendar dataCadastro;
@@ -25,11 +25,11 @@ public class TabelaProdutosVenda extends TabelaIntermediaria {
         motivoCancelamento = (String) map.get("motivoCancelamento");
     }
 
-    public Integer getVenda() {
+    public long getVenda() {
         return venda;
     }
 
-    public void setVenda(int venda) {
+    public void setVenda(long venda) {
         this.venda = venda;
     }
 

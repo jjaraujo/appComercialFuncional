@@ -61,6 +61,7 @@ public class Produto extends Entidade implements Serializable{
 //        csonsNfce = (Csons) map.get("csonsNfce");//+ FuncoesGerais.prefixoChaveEstrangeira());
 //        cfop = (Cfop) map.get("cfop");//+ FuncoesGerais.prefixoChaveEstrangeira());
 //    }
+   
 
     @Override
     public String toString() {
@@ -68,8 +69,7 @@ public class Produto extends Entidade implements Serializable{
     }
     
     @Override
-    public int getId() {
-    	
+    public long getId() {  	
     	return id;
     }
 

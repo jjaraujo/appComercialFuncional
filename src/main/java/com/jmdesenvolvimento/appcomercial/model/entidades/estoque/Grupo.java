@@ -14,6 +14,11 @@ public class Grupo extends Entidade{
 //        id = (int) map.get(getIdNome());
 //        nome_grupo = (String) map.get("nome_grupo");
 //    }
+    
+	@Override
+	public long getId() {
+		return id;
+	}
 
     public String getNome_grupo() {
         return nome_grupo;

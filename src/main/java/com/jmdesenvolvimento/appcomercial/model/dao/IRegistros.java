@@ -7,7 +7,7 @@ public interface IRegistros {
 	public int getInt(String coluna);
 	public double getDouble(String coluna);
 	public long getLong(String coluna);
-	public String get(int position);
+	public String getNomeColuna(int position);
 	public int getColumnCount();
 	public int getCount();
 	public void close();

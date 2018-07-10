@@ -34,7 +34,7 @@ public class Pessoa extends Entidade {
         this.nomePessoa = nome;
     }
     
-    public String getFantasia() {
+    public String getNomeFantasia() {
         return nomeFantasia;
     }
 

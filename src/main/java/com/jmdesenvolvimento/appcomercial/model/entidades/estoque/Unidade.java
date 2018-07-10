@@ -13,7 +13,11 @@ public class Unidade extends Entidade{
 //        id = (int) map.get(getIdNome());
 //        nome_unidade = (String) map.get("nome_unidade");
 //    }
-
+    
+	@Override
+	public long getId() {
+		return id;
+	}
 
     public String getNome_unidade() {
         return nome_unidade;

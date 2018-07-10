@@ -12,6 +12,7 @@ import com.jmdesenvolvimento.appcomercial.model.dao.IConnection;
 public final class VariaveisControleG {
 
     /**Armazena a venda selecionada pelo usuário*/
+	public static int tipoSql;
     public static Venda vendaSelecionada;
     public static Configuracoes configuracoesSimples;
     public static double valorRestante;

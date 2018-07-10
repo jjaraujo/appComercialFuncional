@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 import java.util.Calendar;
 import java.util.List;
 
-import com.jmdesenvolvimento.appcomercial.controller.TabelasMapeadas;
+import com.jmdesenvolvimento.appcomercial.model.TabelasMapeadas;
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
 
 public final class VerificaTipos {

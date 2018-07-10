@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.jmdesenvolvimento.appcomercial.controller.FuncoesSql;
+import com.jmdesenvolvimento.appcomercial.controller.NaoUsar;
 import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
 import com.jmdesenvolvimento.appcomercial.controller.funcoesGerais.FuncoesGerais;
 import com.jmdesenvolvimento.appcomercial.controller.funcoesGerais.VerificaTipos;
@@ -25,9 +26,9 @@ public abstract class Tabela implements Serializable {
 
 	private HashMap<String, Object> map;
 		
-	public int id;
+	public long id;
 
-	public int empresaCliente = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId() ;
+	public long empresaCliente = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId() ;
 
 	public Calendar dataExclusao;
 
@@ -36,13 +37,14 @@ public abstract class Tabela implements Serializable {
 	public boolean getPrecisaRegistroInicial() {
 		return false;
 	}
-
-	public int getId() {
+	
+	/**Deve ser sobrescrito caso a tabela tenha ids definidos no banco*/
+	public long getId() {
 		id = id == 0 ? FuncoesGerais.getIdUnico() : id;
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -54,7 +56,7 @@ public abstract class Tabela implements Serializable {
 		this.dataExclusao = dataExclusao;
 	}
 
-	public int getEmpresaCliente() {
+	public long getEmpresaCliente() {
 		empresaCliente = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
 		return empresaCliente;
 	}
@@ -72,6 +74,11 @@ public abstract class Tabela implements Serializable {
 	public String getNomeTabela(boolean minusculo) {
 		String nome = this.getClass().getSimpleName();
 		return minusculo ? nome.substring(0, 1).toLowerCase().concat(nome.substring(1)) : nome;
+	}
+	
+	public String getNomeCompletoTabela() {
+		String nome = this.getClass().getName();
+		return nome.replace("class ","");
 	}
 	
 
@@ -118,9 +125,9 @@ public abstract class Tabela implements Serializable {
 
 	        map = isPegandoAtributosSuperClassNOBASE ? map : new HashMap<String, Object>();
 
-	        map.put("id",0);
-        	map.put("dataExclusao",FuncoesGerais.getCalendarNulo());
-        	map.put("empresaCliente",0);
+	     //   map.put("id",0);
+        //	map.put("dataExclusao",FuncoesGerais.getCalendarNulo());
+        //	map.put("empresaCliente",getEmpresaCliente());
 	        
 	        Field[] fields = getClass().getDeclaredFields();
 	        if(!isPegandoAtributosSuperClassNOBASE) {
@@ -141,13 +148,15 @@ public abstract class Tabela implements Serializable {
 
 	        for (Field field : fields) {
 	            field.setAccessible(true);
-	//
-	            //verifica se a variável é estática
+
+	            //verifica casos onde o field nao deve entrar no map 
 	            int modifiers = field.getModifiers();
-	            if (Modifier.isStatic(modifiers) || field.getName().contains("NOBASE")) {
+	            if (Modifier.isStatic(modifiers) 
+	            		|| field.getName().contains("NOBASE") 
+	            		|| field.isAnnotationPresent(NaoUsar.class)) {
 	                continue;
 	            }
-
+	            
 	            try {
 	                Object objectField = null;
 	                try {
@@ -247,5 +256,13 @@ public abstract class Tabela implements Serializable {
 	public void anulaMapAtributo(){
         map = null;
     }
+	
+	public boolean usaInsert() {
+		return true;
+	}
+	
+	public List<String> alterTableAposCriacao(){
+		return null;
+	}
 
 }

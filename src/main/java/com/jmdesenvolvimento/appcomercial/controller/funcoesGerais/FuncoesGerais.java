@@ -11,13 +11,13 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.jmdesenvolvimento.appcomercial.controller.TabelasMapeadas;
+import com.jmdesenvolvimento.appcomercial.model.TabelasMapeadas;
 import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
 import com.jmdesenvolvimento.appcomercial.model.dao.IConnection;
 import com.jmdesenvolvimento.appcomercial.model.entidades.vendas.Venda;
 
-/**Aqui ficam as funÃƒÂ§ÃƒÂµes que servem para Android e Java*/
+/**Aqui ficam as funÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Âµes que servem para Android e Java*/
 public final class FuncoesGerais {
 
     private static boolean usandoDatePickerDialog;
@@ -25,10 +25,10 @@ public final class FuncoesGerais {
     public static final String ddMMyyyy = "dd/MM/yyyy";
     public static final String yyyyMMdd = "yyyy-MM-dd";
     
-    public static int getIdUnico() {
-    	int idEmpresa = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
-    	int i = (int) Math.random() * 10;
-    	int i2 = (int) Math.random();
+    public static long getIdUnico() {
+    	long idEmpresa = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
+    	int i = (int)(Math.random() * 10);
+    	int i2 = (int) (Math.random()* 10);
     	String idFuncionario = VariaveisControleG.funcionarioLogado == null ? i + "" : VariaveisControleG.funcionarioLogado.getId() + "";
     	long intAnt = (+new GregorianCalendar().getTimeInMillis());
     	String ss = String.valueOf(intAnt);
@@ -36,8 +36,8 @@ public final class FuncoesGerais {
     	return Integer.parseInt(idEmpresa + idFuncionario + i2 + s);
     }
     
-    public static int getIdUnicoVenda() {
-    	int idEmpresa = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
+    public static long getIdUnicoVenda() {
+    	long idEmpresa = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
     	double i = Math.random();
     	long intAnt = (+new GregorianCalendar().getTimeInMillis());
     	String ss = String.valueOf(intAnt);
@@ -141,20 +141,20 @@ public final class FuncoesGerais {
     public static String removeCaracteresEspeciais(String string) {
     	return string;
 //        return string
-//                .replaceAll("[Ã£Ã¢Ã Ã¡Ã¤]", "a")
-//                .replaceAll("[ÃªÃ¨Ã©Ã«&]", "e")
-//                .replaceAll("[Ã®Ã¬Ã­Ã¯]", "i")
-//                .replaceAll("[ÃµÃ´Ã²Ã³Ã¶]", "o")
-//                .replaceAll("[Ã»ÃºÃ¹Ã¼]", "u")
-//                .replaceAll("[ÃƒÃ‚Ã€Ã�Ã„]", "A")
-//                .replaceAll("[ÃŠÃˆÃ‰Ã‹]", "E")
-//                .replaceAll("[ÃŽÃŒÃ�Ã�]", "I")
-//                .replaceAll("[Ã•Ã”Ã’Ã“Ã–]", "O")
-//                .replaceAll("[Ã›Ã™ÃšÃœ]", "U")
-//                .replace('Ã§', 'c')
-//                .replace('Ã‡', 'C')
-//                .replace('Ã±', 'n')
-//                .replace('Ã‘', 'N')
+//                .replaceAll("[ÃƒÂ£ÃƒÂ¢ÃƒÂ ÃƒÂ¡ÃƒÂ¤]", "a")
+//                .replaceAll("[ÃƒÂªÃƒÂ¨ÃƒÂ©ÃƒÂ«&]", "e")
+//                .replaceAll("[ÃƒÂ®ÃƒÂ¬ÃƒÂ­ÃƒÂ¯]", "i")
+//                .replaceAll("[ÃƒÂµÃƒÂ´ÃƒÂ²ÃƒÂ³ÃƒÂ¶]", "o")
+//                .replaceAll("[ÃƒÂ»ÃƒÂºÃƒÂ¹ÃƒÂ¼]", "u")
+//                .replaceAll("[ÃƒÆ’Ãƒâ€šÃƒâ‚¬Ãƒï¿½Ãƒâ€ž]", "A")
+//                .replaceAll("[ÃƒÅ ÃƒË†Ãƒâ€°Ãƒâ€¹]", "E")
+//                .replaceAll("[ÃƒÅ½ÃƒÅ’Ãƒï¿½Ãƒï¿½]", "I")
+//                .replaceAll("[Ãƒâ€¢Ãƒâ€�Ãƒâ€™Ãƒâ€œÃƒâ€“]", "O")
+//                .replaceAll("[Ãƒâ€ºÃƒâ„¢ÃƒÅ¡ÃƒÅ“]", "U")
+//                .replace('ÃƒÂ§', 'c')
+//                .replace('Ãƒâ€¡', 'C')
+//                .replace('ÃƒÂ±', 'n')
+//                .replace('Ãƒâ€˜', 'N')
 //                ;
     }
 
@@ -205,6 +205,11 @@ public final class FuncoesGerais {
     }
 
     public static String addZeros(int numero,int tamanhoTotal){
+		long l = numero;
+        return addZeros(l, tamanhoTotal);
+    }
+    
+    public static String addZeros(long numero,int tamanhoTotal){
         String formatado = "" ;
         int tamanhoAtual = (numero+"").length();
         while( tamanhoAtual <  tamanhoTotal){
@@ -261,22 +266,21 @@ public final class FuncoesGerais {
     }
     
     public static Tabela getNovaInstanciaTabela(Field field){
-        try {
             Type type = field.getType();
             String nomeType = type.toString().replace("class ", "");
-            Tabela tabela = (Tabela) Class.forName(nomeType).newInstance();
-
+            Tabela tabela = getNovaInstanciaTabela(nomeType);
             return tabela;
-
-        }catch (ClassNotFoundException e){
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
-        return null;
      }
+    
+    public static Tabela getNovaInstanciaTabela(String nome) {
+    	try {
+			Tabela tabela = (Tabela) Class.forName(nome).newInstance();
+			return tabela;
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
 
     public static String calendarToString(Calendar calendar, String formato, boolean paraSql){
         if(calendar == null || calendar.getTimeInMillis() == 0 ){
@@ -288,7 +292,7 @@ public final class FuncoesGerais {
     }
 
     /**@param nomeAtributo - Informe o nome do field na tabela
-     * @param tabela - Informe o objeto tabela onde o valor serÃ¡ pegado
+     * @param tabela - Informe o objeto tabela onde o valor serÃƒÂ¡ pegado
      * @return Retorna o valor do field de uma tabela pelo nome*/
     public static Object getValorFieldDeTabela(String nomeAtributo, Tabela tabela) {
         
@@ -299,14 +303,14 @@ public final class FuncoesGerais {
             return f.get(tabela);
             
         } catch (IllegalAccessException e) {
-     //       Log.e("IllegalAccessException", "NÃƒÂ£o foi possÃƒÂ­vel encontrar o objeto " + nomeAtributo + " da tabela " + tabela.getNomeTabela(false));
+     //       Log.e("IllegalAccessException", "NÃƒÆ’Ã‚Â£o foi possÃƒÆ’Ã‚Â­vel encontrar o objeto " + nomeAtributo + " da tabela " + tabela.getNomeTabela(false));
             e.printStackTrace();
             return null;
         }
     }
     
     /**@param nomeAtributo - Informe o nome do field na tabela
-     * @param tabela - Informe o objeto tabela onde o field serÃ¡ pegado
+     * @param tabela - Informe o objeto tabela onde o field serÃƒÂ¡ pegado
      * @return Retorna o valor do field de uma tabela pelo nome*/
     public static Field getFieldDeTabela(String nomeAtributo, Tabela tabela) {
     	Class classe = tabela.getClass();

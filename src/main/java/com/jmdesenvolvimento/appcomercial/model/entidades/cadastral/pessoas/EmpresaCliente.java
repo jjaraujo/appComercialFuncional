@@ -22,7 +22,12 @@ public class EmpresaCliente extends APessoa {
 //        plano = (int) map.get("plano");
 //        dataVencimento = (Calendar) map.get("dataVencimento");
 //    }
-
+    
+    @Override
+    public long getId() {
+    	return id;
+    }
+    
     @Override
     public List<Tabela> getListValoresIniciais() {
         return null;

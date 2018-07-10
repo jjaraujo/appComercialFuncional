@@ -23,7 +23,7 @@ public class Funcionario  extends APessoa{
 //    }
     
     @Override
-    public int getId() {
+    public long getId() {
     	return id;
     }
     

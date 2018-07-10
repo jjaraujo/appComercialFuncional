@@ -8,7 +8,7 @@ public class TabelaParcelasPagamento extends TabelaIntermediaria {
     private int numeroParcela;
     private double valor;
     private Calendar data;
-    private int tabelaPagamento;
+    private long tabelaPagamento;
     private int totalParcelas;
 
     @Override
@@ -45,11 +45,11 @@ public class TabelaParcelasPagamento extends TabelaIntermediaria {
         this.data = data;
     }
 
-    public int getTabelaPagamento() {
+    public long getTabelaPagamento() {
         return tabelaPagamento;
     }
 
-    public void setTabelaPagamento(int tabelaPagamento) {
+    public void setTabelaPagamento(long tabelaPagamento) {
         this.tabelaPagamento = tabelaPagamento;
     }
 

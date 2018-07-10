@@ -18,18 +18,22 @@ public class TipoPagamento extends Entidade{
     public final static int BOLETO = 4;
     public final static int FIADO = 5;
 
-    public TipoPagamento(String nome, int tipoIcone, boolean aceitaParcela){
+    public TipoPagamento(int id,String nome, int tipoIcone, boolean aceitaParcela){
         this.nome = nome;
         this.tipoIcone = tipoIcone;
         aceito = true;
         this.aceitaParcela = aceitaParcela;
+        this.id = id;
     }
     
     public TipoPagamento() {
     	
     }
 
-    
+	@Override
+	public long getId() {
+		return id;
+	}
 
     public String getNome() {
         return nome;
@@ -77,19 +81,19 @@ public class TipoPagamento extends Entidade{
     public List<Tabela> getListValoresIniciais() {
         //"R.drawable.icone_cartao"
         List<Tabela> list = new ArrayList<>();
-        TipoPagamento cartaoCredito = new TipoPagamento("Cart√£o de Cr√©dito",CARTAO,false);
+        TipoPagamento cartaoCredito = new TipoPagamento(1,"Cart„o de CrÈdito",CARTAO,false);
         list.add(cartaoCredito);
-        TipoPagamento cartaoDebito = new TipoPagamento("Cart√£o de D√©bito",CARTAO,false);
+        TipoPagamento cartaoDebito = new TipoPagamento(2,"Cart„o de DÈbito",CARTAO,false);
         list.add(cartaoDebito);
-        TipoPagamento dinheiro = new TipoPagamento("Dinheiro",DINHEIRO,false);
+        TipoPagamento dinheiro = new TipoPagamento(3,"Dinheiro",DINHEIRO,false);
         list.add(dinheiro);
-        TipoPagamento cheque = new TipoPagamento("Cheque",CHEQUE,true);
+        TipoPagamento cheque = new TipoPagamento(4,"Cheque",CHEQUE,true);
         list.add(cheque);
-        TipoPagamento boleto = new TipoPagamento("Boleto",BOLETO,true);
+        TipoPagamento boleto = new TipoPagamento(5,"Boleto",BOLETO,true);
         list.add(boleto);
-        TipoPagamento alimentacao = new TipoPagamento("Alimenta√ß√£o/Refei√ß√£o",CARTAO,false);
+        TipoPagamento alimentacao = new TipoPagamento(6,"AlimentaÁ„o/RefeiÁ„o",CARTAO,false);
         list.add(alimentacao);
-        TipoPagamento fiado = new TipoPagamento("Fiado",FIADO,true);
+        TipoPagamento fiado = new TipoPagamento(7,"Fiado",FIADO,true);
         list.add(fiado);
         return list;
     }

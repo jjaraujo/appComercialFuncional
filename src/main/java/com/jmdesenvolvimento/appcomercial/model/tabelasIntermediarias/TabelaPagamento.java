@@ -6,12 +6,12 @@ import java.util.List;
 import com.jmdesenvolvimento.appcomercial.model.entidades.vendas.TipoPagamento;
 
 public class TabelaPagamento extends TabelaIntermediaria {
-    private int venda;
+    private long venda;
     private TipoPagamento tipoPagamento;
     private double valor;
     private List<TabelaParcelasPagamento> tabelaParcelasPagamento;
 
-    public TabelaPagamento(int venda){
+    public TabelaPagamento(long venda){
         this.venda = venda;
     }
     public TabelaPagamento(){
@@ -26,11 +26,11 @@ public class TabelaPagamento extends TabelaIntermediaria {
         tabelaParcelasPagamento = (List<TabelaParcelasPagamento>) map.get("tabelaParcelasPagamento");
     }
 
-    public Integer getVenda() {
+    public long getVenda() {
         return venda;
     }
 
-    public void setVenda(int venda) {
+    public void setVenda(long venda) {
         this.venda = venda;
     }
 

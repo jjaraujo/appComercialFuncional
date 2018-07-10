@@ -32,7 +32,7 @@ public class Venda extends Entidade {
     }
     
     @Override
-    public int getId() {
+    public long getId() {
  
     	return id == 0 ? FuncoesGerais.getIdUnicoVenda() : id;
     }

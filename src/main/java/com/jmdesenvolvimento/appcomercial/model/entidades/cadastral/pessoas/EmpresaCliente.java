@@ -6,13 +6,11 @@ import java.util.List;
 
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
 
-public class EmpresaCliente extends APessoa {
+public class EmpresaCliente extends AUsuario {
 
     private Calendar dataCadastro;
     private int plano;
     private Calendar dataVencimento;
-    private String email;
-    private String senha;
 
 //    @Override
 //    public void setMapAtributos(HashMap<String, Object> map) {
@@ -56,25 +54,4 @@ public class EmpresaCliente extends APessoa {
 	public void setDataVencimento(Calendar dataVencimento) {
 		this.dataVencimento = dataVencimento;
 	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	
-	
-	
-    
-    
 }

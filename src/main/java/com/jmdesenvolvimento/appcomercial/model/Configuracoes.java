@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.jmdesenvolvimento.appcomercial.controller.FuncoesSql;
-import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
+import com.jmdesenvolvimento.appcomercial.controller.VariaveisControle;
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
 
 public class Configuracoes extends Tabela{
@@ -81,7 +81,7 @@ public class Configuracoes extends Tabela{
     
     @Override
     public boolean usaInsert() {
-    	if(VariaveisControleG.tipoSql == FuncoesSql.SQL_SERVER)
+    	if(VariaveisControle.tipoSql == FuncoesSql.SQL_SERVER)
     		return false;
     	
     	return true;

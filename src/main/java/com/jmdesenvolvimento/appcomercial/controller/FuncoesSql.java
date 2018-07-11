@@ -83,7 +83,7 @@ public abstract class FuncoesSql {
 			if (nome == null) {
 				continue;
 			}
-			sql += "," + substituiTiposVariaveisCreateTable(nomeAtributos[j], tabela, atributo, tipoSql);
+			sql +=  substituiTiposVariaveisCreateTable(nomeAtributos[j], tabela, atributo, tipoSql,j);
 		}
 		sql = sql.replace("(,", "(");
 		sql = sql + ");";
@@ -117,9 +117,9 @@ public abstract class FuncoesSql {
 	 * @param objetoValorDaColuna - Informar o valor da coluna, com o qual será verificado qual o tipo de variável
 	 * @param tipoSql - Informar o tipo de sql, já definidos como fields static
 	 * @return Retorna o trecho de SQL referente a coluna. EX: id_tabela_pk VARCHAR(100) PRIMARY KEY NOT NULL*/
-	private static String substituiTiposVariaveisCreateTable(String nomeColuna, Tabela tabela, Object objetoValorDaColuna, int tipoSql) {
+	private static String substituiTiposVariaveisCreateTable(String nomeColuna, Tabela tabela, Object objetoValorDaColuna, int tipoSql, int position) {
 		
-		if(FuncoesGerais.getFieldDeTabela(nomeColuna, tabela).isAnnotationPresent(NaoUsar.class))
+		if(FuncoesGerais.getFieldDeTabela(nomeColuna, tabela).isAnnotationPresent(NaoUsarNaBase.class))
 			return "";
 		
 		String sql;
@@ -140,7 +140,7 @@ public abstract class FuncoesSql {
 			nomeTipo = (tipoSql == SQLITE ? " INTEGER PRIMARY KEY " : " INT PRIMARY KEY NOT NULL IDENTITY ");
 		}
 		sql = nomeColuna + nomeTipo;
-		return sql;
+		return position > 0 ? "," + sql : sql;
 	}
 	
 	

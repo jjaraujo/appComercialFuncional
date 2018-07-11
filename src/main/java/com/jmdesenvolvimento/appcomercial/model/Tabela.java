@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.jmdesenvolvimento.appcomercial.controller.FuncoesSql;
-import com.jmdesenvolvimento.appcomercial.controller.NaoUsar;
-import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
+import com.jmdesenvolvimento.appcomercial.controller.NaoUsarNaBase;
+import com.jmdesenvolvimento.appcomercial.controller.VariaveisControle;
 import com.jmdesenvolvimento.appcomercial.controller.funcoesGerais.FuncoesGerais;
 import com.jmdesenvolvimento.appcomercial.controller.funcoesGerais.VerificaTipos;
 import com.jmdesenvolvimento.appcomercial.model.entidades.Entidade;
@@ -23,16 +23,20 @@ public abstract class Tabela implements Serializable {
 	 * Informar instancias da tabela que contém valores a serem inseridos no banco
 	 */
 	public abstract List<Tabela> getListValoresIniciais();
-
+	
+	@NaoUsarNaBase
 	private HashMap<String, Object> map;
 		
 	public long id;
 
-	public long empresaCliente = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId() ;
+	public long empresaCliente = VariaveisControle.empresaCliente == null ? 0 : VariaveisControle.empresaCliente.getId() ;
 
 	public Calendar dataExclusao;
-
-	private boolean isPegandoAtributosSuperClassNOBASE;
+	
+	@NaoUsarNaBase
+	private boolean isPegandoAtributosSuperClass;
+	
+	public long idAnterior;
 
 	public boolean getPrecisaRegistroInicial() {
 		return false;
@@ -57,7 +61,7 @@ public abstract class Tabela implements Serializable {
 	}
 
 	public long getEmpresaCliente() {
-		empresaCliente = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
+		empresaCliente = VariaveisControle.empresaCliente == null ? 0 : VariaveisControle.empresaCliente.getId();
 		return empresaCliente;
 	}
 
@@ -119,41 +123,44 @@ public abstract class Tabela implements Serializable {
 	  public HashMap<String, Object> getMapAtributos(boolean carregaMapNovamente) {
 
 	        // retornará o map da memÃ³ria se ele já tiver sido criado uma vez ou se nao
-	        if (map != null && !carregaMapNovamente && !isPegandoAtributosSuperClassNOBASE ) {
+	        if (map != null && !carregaMapNovamente && !isPegandoAtributosSuperClass ) {
 	            return map;
 	        }
 
-	        map = isPegandoAtributosSuperClassNOBASE ? map : new HashMap<String, Object>();
+	        map = isPegandoAtributosSuperClass ? map : new HashMap<String, Object>();
 
+ //******** se em 30/07/2018 isso  estiver comentado, pode excluir
 	     //   map.put("id",0);
         //	map.put("dataExclusao",FuncoesGerais.getCalendarNulo());
         //	map.put("empresaCliente",getEmpresaCliente());
 	        
 	        Field[] fields = getClass().getDeclaredFields();
-	        if(!isPegandoAtributosSuperClassNOBASE) {
-	            isPegandoAtributosSuperClassNOBASE = true;
+	        if(!isPegandoAtributosSuperClass) {
+	            isPegandoAtributosSuperClass = true;
 	            getMapAtributos(false);
 	            fields = getClass().getFields();
 	       //     Log.i("Fields super", fields.length +"");
 	        }
-	        isPegandoAtributosSuperClassNOBASE = false;
-
+	        isPegandoAtributosSuperClass = false;
+	       
+//******** se em 30/07/2018 isso  estiver comentado, pode excluir
 	        //caso o id da tabela tenha valor > 0, será adicionado no map o valor atual
 //	        int id = getId() == 0 ? 0 : getId();
-//	        map.put(getIdNome(), id);
+//	        map.put(getIdNome(), id); 
 
 	        // caso a dataExclusao nao tenha nenhum valor, será criado um valor vazio
 //	        Calendar dataExclusao = getDataExclusao() == null ? FuncoesGerais.getCalendarNulo() : getDataExclusao();
 //	        map.put(getDataExclusaoNome(), dataExclusao);
-
+//********
+	        
 	        for (Field field : fields) {
 	            field.setAccessible(true);
 
 	            //verifica casos onde o field nao deve entrar no map 
 	            int modifiers = field.getModifiers();
 	            if (Modifier.isStatic(modifiers) 
-	            		|| field.getName().contains("NOBASE") 
-	            		|| field.isAnnotationPresent(NaoUsar.class)) {
+	            		|| field.isAnnotationPresent(NaoUsarNaBase.class)
+	            		|| FuncoesGerais.fieldOverrideEhAnotadoNaoUsar(field.getName(),this)) {
 	                continue;
 	            }
 	            
@@ -263,6 +270,14 @@ public abstract class Tabela implements Serializable {
 	
 	public List<String> alterTableAposCriacao(){
 		return null;
+	}
+
+	public long getIdAnterior() {
+		return idAnterior;
+	}
+
+	public void setIdAnterior(long idAnterior) {
+		this.idAnterior = idAnterior;
 	}
 
 }

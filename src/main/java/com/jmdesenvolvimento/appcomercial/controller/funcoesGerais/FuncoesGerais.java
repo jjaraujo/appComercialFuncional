@@ -12,7 +12,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 import com.jmdesenvolvimento.appcomercial.model.TabelasMapeadas;
-import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
+import com.jmdesenvolvimento.appcomercial.controller.NaoUsarNaBase;
+import com.jmdesenvolvimento.appcomercial.controller.VariaveisControle;
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
 import com.jmdesenvolvimento.appcomercial.model.dao.IConnection;
 import com.jmdesenvolvimento.appcomercial.model.entidades.vendas.Venda;
@@ -26,10 +27,10 @@ public final class FuncoesGerais {
     public static final String yyyyMMdd = "yyyy-MM-dd";
     
     public static long getIdUnico() {
-    	long idEmpresa = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
+    	long idEmpresa = VariaveisControle.empresaCliente == null ? 0 : VariaveisControle.empresaCliente.getId();
     	int i = (int)(Math.random() * 10);
     	int i2 = (int) (Math.random()* 10);
-    	String idFuncionario = VariaveisControleG.funcionarioLogado == null ? i + "" : VariaveisControleG.funcionarioLogado.getId() + "";
+    	String idFuncionario = VariaveisControle.funcionarioLogado == null ? i + "" : VariaveisControle.funcionarioLogado.getId() + "";
     	long intAnt = (+new GregorianCalendar().getTimeInMillis());
     	String ss = String.valueOf(intAnt);
     	String s = ss.substring(ss.length() - 5,ss.length());
@@ -37,13 +38,13 @@ public final class FuncoesGerais {
     }
     
     public static long getIdUnicoVenda() {
-    	long idEmpresa = VariaveisControleG.empresaCliente == null ? 0 : VariaveisControleG.empresaCliente.getId();
+    	long idEmpresa = VariaveisControle.empresaCliente == null ? 0 : VariaveisControle.empresaCliente.getId();
     	double i = Math.random();
     	long intAnt = (+new GregorianCalendar().getTimeInMillis());
     	String ss = String.valueOf(intAnt);
     	String s = ss.substring(ss.length() - 4,ss.length());
-    	String idVendedor = VariaveisControleG.funcionarioLogado == null ? addZeros(Integer.parseInt(s), 4) : VariaveisControleG.funcionarioLogado.getId() + "";
-    	IConnection iConnection = VariaveisControleG.iConnection;
+    	String idVendedor = VariaveisControle.funcionarioLogado == null ? addZeros(Integer.parseInt(s), 4) : VariaveisControle.funcionarioLogado.getId() + "";
+    	IConnection iConnection = VariaveisControle.iConnection;
     	int id = iConnection.countIdEntidade(new Venda()) + 1;
     	return Integer.parseInt(idEmpresa + idVendedor + id) ;
     	//191501153408
@@ -332,7 +333,13 @@ public final class FuncoesGerais {
             return  null;
         }
     }
-
+    
+    
+    public static boolean fieldOverrideEhAnotadoNaoUsar(String nomeField, Tabela tabela){
+    	Field fieldOverride = FuncoesGerais.getFieldDeTabela(nomeField, tabela) ;
+        return fieldOverride == null ? false : fieldOverride.isAnnotationPresent(NaoUsarNaBase.class);
+        
+    }
 
     public static String getPrefixoPK(){
         return "_pk";

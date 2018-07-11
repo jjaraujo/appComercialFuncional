@@ -27,11 +27,11 @@ import com.jmdesenvolvimento.appcomercial.model.tabelasIntermediarias.TabelaProd
 public class TabelasMapeadas {
 	
 	public static final Tabela[] tabelas = { 
-			new Configuracoes(), new TipoPagamento(), new Pessoa(), new Cliente(),
+			new Dispositivo(), new Configuracoes(), new TipoPagamento(), new Pessoa(), new Cliente(),
 			new Municipio(), new Produto(), new Ncm(), new Grupo(), new Estado(), new Fornecedor(), new Cfop(),
 			new Csons(), new TipoItem(), new Funcionario(), new Unidade(), new TabelaProdutosVenda(),
 			new Venda(), new Cst(), new TabelaPagamento(), new TabelaParcelasPagamento(), new ContaReceber(),
-			new EmpresaCliente(), new Dispositivo()
+			new EmpresaCliente()
 			};
 	
 	public static Tabela getTabelaForNome(String nome, boolean nomeSimples) {

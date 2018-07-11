@@ -9,13 +9,13 @@ import com.jmdesenvolvimento.appcomercial.model.entidades.contas.ContaReceber;
 import com.jmdesenvolvimento.appcomercial.model.entidades.vendas.Venda;
 import com.jmdesenvolvimento.appcomercial.model.tabelasIntermediarias.TabelaPagamento;
 import com.jmdesenvolvimento.appcomercial.model.tabelasIntermediarias.TabelaParcelasPagamento;
-import com.jmdesenvolvimento.appcomercial.controller.VariaveisControleG;
+import com.jmdesenvolvimento.appcomercial.controller.VariaveisControle;
 
 
 public final class FuncoesVendasG {
 
     public static void finalizaVenda(IConnection dao){
-        Venda vendaSelecionada = VariaveisControleG.vendaSelecionada;
+        Venda vendaSelecionada = VariaveisControle.vendaSelecionada;
         for(TabelaPagamento t : vendaSelecionada.getTabelaPagamentos()){
             t.setId(dao.countIdEntidade(t)+1); // ID adicionado aqui para que possa ser inserido da TabelaParcelasPagamento
             for(TabelaParcelasPagamento parcelaPagamento : t.getTabelaParcelasPagamento()){
@@ -35,12 +35,12 @@ public final class FuncoesVendasG {
             dao.insert(t);
         }
         vendaSelecionada.setDataFechamento(Calendar.getInstance());
-        dao.update(vendaSelecionada,true);
+        dao.update(vendaSelecionada);
     }
 
     /**Método para criar vendas por cliente ou comanda/mesa*/
     public static void criaVenda(IConnection dao, Venda venda){
-        VariaveisControleG.vendaSelecionada = venda;
+        VariaveisControle.vendaSelecionada = venda;
         venda.setTabelaPagamentos(new ArrayList<TabelaPagamento>());
         venda.setDataRegistro(Calendar.getInstance());
         venda.setMapAtributos(venda.getMapAtributos(true));

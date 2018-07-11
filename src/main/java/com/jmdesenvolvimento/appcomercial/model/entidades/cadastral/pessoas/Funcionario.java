@@ -7,11 +7,9 @@ import java.util.List;
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
 import com.jmdesenvolvimento.appcomercial.model.entidades.Entidade;
 
-public class Funcionario  extends APessoa{
+public class Funcionario  extends AUsuario{
 
     private double comissao;
-    private String usuario;
-    private String senha;
 
 //    @Override
 //    public void setMapAtributos(HashMap<String, Object> map) {
@@ -35,21 +33,6 @@ public class Funcionario  extends APessoa{
         this.comissao = comissao;
     }
 
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
 
 	@Override
 	public List<Tabela> getListValoresIniciais() {

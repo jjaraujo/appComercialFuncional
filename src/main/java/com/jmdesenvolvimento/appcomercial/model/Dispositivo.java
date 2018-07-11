@@ -3,12 +3,12 @@ package com.jmdesenvolvimento.appcomercial.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jmdesenvolvimento.appcomercial.controller.NaoUsar;
+import com.jmdesenvolvimento.appcomercial.controller.NaoUsarNaBase;
 import com.jmdesenvolvimento.appcomercial.model.Tabela;
 
 public class Dispositivo extends Tabela{
 	
-	@NaoUsar
+	@NaoUsarNaBase
 	private long id;
 	
 	private String token;

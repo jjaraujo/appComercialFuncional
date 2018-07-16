@@ -17,15 +17,6 @@ public class TabelaPagamento extends TabelaIntermediaria {
     public TabelaPagamento(){
     }
 
-    @Override
-    public void setMapAtributos(HashMap<String, Object> map) {
-        id = (int) map.get(getIdNome());
-        tipoPagamento = (TipoPagamento) map.get("tipoPagamentos");//+ FuncoesGerais.prefixoChaveEstrangeira());
-        venda = (int) map.get("venda");
-        valor = (double) map.get("valor");
-        tabelaParcelasPagamento = (List<TabelaParcelasPagamento>) map.get("tabelaParcelasPagamento");
-    }
-
     public long getVenda() {
         return venda;
     }

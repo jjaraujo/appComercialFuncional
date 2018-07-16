@@ -12,15 +12,7 @@ public class ContaReceber extends Entidade {
     private TabelaParcelasPagamento tabelaParcelasPagamento;
     private Cliente cliente;
     private Calendar dataVencimento;
-//
-//    @Override
-//    public void setMapAtributos(HashMap<String, Object> map) {
-//        id = (int) map.get(getIdNome());
-//        tabelaParcelasPagamento = (TabelaParcelasPagamento) map.get("tabelaParcelasPagamento");//+FuncoesGerais.prefixoChaveEstrangeira());
-//        tipoPagamento = (TipoPagamento) map.get("tipoPagamento");//+ FuncoesGerais.prefixoChaveEstrangeira());
-//        cliente = (Cliente) map.get("cliente");//+ FuncoesGerais.prefixoChaveEstrangeira());
-//        dataVencimento = (Calendar) map.get("dataVencimento");//+ FuncoesGerais.prefixoChaveEstrangeira());
-//    }
+
 
     public TipoPagamento getTipoPagamento() {
         return tipoPagamento;

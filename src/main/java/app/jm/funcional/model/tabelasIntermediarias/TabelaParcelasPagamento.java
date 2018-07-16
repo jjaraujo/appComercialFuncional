@@ -11,16 +11,6 @@ public class TabelaParcelasPagamento extends TabelaIntermediaria {
     private long tabelaPagamento;
     private int totalParcelas;
 
-    @Override
-    public void setMapAtributos(HashMap<String, Object> map) {
-        id = (int) map.get(getIdNome());
-        numeroParcela = (int) map.get("numeroParcela");
-        valor = (double) map.get("valor");
-        data = (Calendar) map.get("data");
-        tabelaPagamento = (int) map.get("tabelaPagamento");//+ FuncoesGerais.prefixoChaveEstrangeira());
-        totalParcelas = (int) map.get("totalParcelas");
-    }
-
     public Integer getNumeroParcela() {
         return numeroParcela;
     }

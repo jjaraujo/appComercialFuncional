@@ -36,6 +36,11 @@ public class Dispositivo extends Tabela{
 	}
 	
 	@Override
+	public boolean isbackup() {
+		return false;
+	}
+	
+	@Override
 	public List<String> alterTableAposCriacao() {
 		
 		List<String> list = new ArrayList<String>();

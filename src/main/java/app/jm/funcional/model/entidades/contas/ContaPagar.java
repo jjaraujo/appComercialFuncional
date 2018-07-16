@@ -11,6 +11,7 @@ public class ContaPagar extends Tabela {
     private double valor;
     private Calendar vencimento;
     private int tipoConta;
+    public static final String[] TIPOS_CONTA = {""};
 
 
  

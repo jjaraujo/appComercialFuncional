@@ -33,7 +33,7 @@ public class Municipio extends Entidade implements Serializable {
 	public boolean usaInsert() {
 		return false;
 	}
-
+	
 //	@Override
 //	public void setMapAtributos(HashMap<String, Object> map) {
 //		id = (Integer) map.get(getIdNome());

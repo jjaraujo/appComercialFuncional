@@ -14,6 +14,7 @@ import app.jm.funcional.controller.NaoUsarNaBase;
 import app.jm.funcional.controller.VariaveisControle;
 import app.jm.funcional.controller.funcoesGerais.FuncoesGerais;
 import app.jm.funcional.controller.funcoesGerais.VerificaTipos;
+import app.jm.funcional.model.dao.IConnection;
 import app.jm.funcional.model.entidades.Entidade;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,9 @@ public abstract class Tabela implements Serializable {
 	
 	@NaoUsarNaBase
 	private HashMap<String, Object> map;
-		
+	
+	public long idNaEmpresa;
+	
 	public long id;
 
 	public long empresaClienteId = VariaveisControle.empresaCliente == null ? 0 : VariaveisControle.empresaCliente.getId() ;
@@ -43,12 +46,16 @@ public abstract class Tabela implements Serializable {
 	
 	/**Deve ser sobrescrito caso a tabela tenha ids definidos no banco*/
 	public long getId() {
-		id = id == 0 ? FuncoesGerais.getIdUnico() : id;
+		
 		return id;
 	}
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public void geraId(IConnection con) {
+		id = id == 0 ? FuncoesGerais.getIdUnico() : id;
 	}
 
 	public Calendar getDataExclusao() {
@@ -126,10 +133,12 @@ public abstract class Tabela implements Serializable {
 	        }
 
 	        map = isPegandoAtributosSuperClass ? map : new HashMap<String, Object>();
+	        // se remover esse increment, os valores serão adicionados com a instancia do dia atual, 
+	        //o que ocasionará na exclusão lógica do registro
+	        dataExclusao = FuncoesGerais.getCalendarNulo();
 
  //******** se em 30/07/2018 isso  estiver comentado, pode excluir
 	     //   map.put("id",0);
-        //	map.put("dataExclusao",FuncoesGerais.getCalendarNulo());
         //	map.put("empresaCliente",getEmpresaCliente());
 	        
 	        Field[] fields = getClass().getDeclaredFields();
@@ -192,6 +201,8 @@ public abstract class Tabela implements Serializable {
 	                            map.put(field.getName(), new ArrayList<>());
 	                        } else if (VerificaTipos.isCalendar(objectField, field)) {
 	                            map.put(field.getName(), FuncoesGerais.getCalendarNulo());
+	                        } else if (VerificaTipos.isTime(objectField, field)) {
+	                            map.put(field.getName(), FuncoesGerais.getTimeNow());
 	                        } else {
 	                            map.put(field.getName(), 0);
 	                        }
@@ -205,7 +216,7 @@ public abstract class Tabela implements Serializable {
 	        }
 	        return map;
 	    }
-	public String getIdNome() {
+	public static String getIdNome() {
 		return "id";
 	}
 	
@@ -213,12 +224,26 @@ public abstract class Tabela implements Serializable {
 		return getNomeTabela(false) + "." + getIdNome() ;
 	}
 
-	public String getDataExclusaoNome() {
+	public static String getDataExclusaoNome() {
 		return "dataExclusao";
 	}
 
-	public String prefixoDataExclusao() {
+	public static String prefixoDataExclusao() {
 		return "dataExclusao";
+	}
+	
+	public boolean isbackup() {
+		return true;
+	}
+	
+	public boolean isInsertSomenteDispositivos() {
+		return false;
+	}
+
+	/**@return retorna se deseja deletar todos os dados do dispositivo antes de recuperar do servidor. 
+	 *Informar para tabelas que vem com valores para inserir no momento da criação da tabela*/
+	public boolean isDeletaTudoAntesDoBackup() {
+		return true;
 	}
 
 	/**
@@ -283,5 +308,11 @@ public abstract class Tabela implements Serializable {
 		return null;
 	}
 
+	public long getIdNaEmpresa() {
+		return idNaEmpresa;
+	}
 
+	public void setIdNaEmpresa(long idLoja) {
+		this.idNaEmpresa = idLoja;
+	}
 }

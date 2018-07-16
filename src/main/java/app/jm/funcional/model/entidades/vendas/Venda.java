@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import app.jm.funcional.controller.funcoesGerais.FuncoesGerais;
+import app.jm.funcional.model.dao.IConnection;
 import app.jm.funcional.model.entidades.Entidade;
 import app.jm.funcional.model.entidades.cadastral.pessoas.Cliente;
 import app.jm.funcional.model.entidades.cadastral.pessoas.Funcionario;
@@ -22,6 +23,9 @@ public class Venda extends Entidade {
     private Calendar dataCancelamento;
     private String motivoCancelamento;
     private double desconto;
+    private double total;
+    private double valorTotalAvista;
+    private double valorTotalPrazo;
 
     public Venda (int numeroMesaComanda){
         this.numeroMesaComanda = numeroMesaComanda;
@@ -32,9 +36,9 @@ public class Venda extends Entidade {
     }
     
     @Override
-    public long getId() {
+    public void geraId(IConnection con) {
  
-    	return id == 0 ? FuncoesGerais.getIdUnicoVenda() : id;
+    	id = id == 0 ? FuncoesGerais.getIdUnicoVenda() : id;
     }
 
 //    @Override
@@ -136,11 +140,36 @@ public class Venda extends Entidade {
     public void setDesconto(double desconto) {
         this.desconto = desconto;
     }
+    
+    
 
     @Override
     public String toString() {
         return getId() + " - EmpresaCliente: " + cliente.getId();
     }
-    
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public double getValorTotalAvista() {
+		return valorTotalAvista;
+	}
+
+	public void setValorTotalAvista(double valorTotalAvista) {
+		this.valorTotalAvista = valorTotalAvista;
+	}
+
+	public double getValorTotalAPrazo() {
+		return valorTotalPrazo;
+	}
+
+	public void setValorTotalAPrazo(double valorTotalPrazo) {
+		this.valorTotalPrazo = valorTotalPrazo;
+	}
     
 }

@@ -1,9 +1,12 @@
 package app.jm.funcional.model;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+
+import com.google.gson.reflect.TypeToken;
 
 import app.jm.funcional.controller.FuncoesSql;
 import app.jm.funcional.controller.VariaveisControle;
@@ -90,4 +93,10 @@ public class Configuracoes extends Tabela{
     	
     	return true;
     }
+    
+
+	@Override
+	public Type typeParaJson() {
+		return new TypeToken<List<Configuracoes>>(){}.getType();
+	}
 }

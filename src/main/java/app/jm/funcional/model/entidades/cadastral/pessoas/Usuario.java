@@ -1,6 +1,12 @@
 package app.jm.funcional.model.entidades.cadastral.pessoas;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
+import com.google.gson.reflect.TypeToken;
+
 import app.jm.funcional.model.dao.IConnection;
+import app.jm.funcional.model.entidades.estoque.Grupo;
 
 @SuppressWarnings("serial")
 public class Usuario extends APessoa {
@@ -42,6 +48,11 @@ public class Usuario extends APessoa {
 	@Override
 	public boolean isbackup() {
 		return false;
+	}
+	
+	@Override
+	public Type typeParaJson() {
+		return new TypeToken<List<Usuario>>(){}.getType();
 	}
 	
 }

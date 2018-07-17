@@ -1,8 +1,12 @@
 package app.jm.funcional.model.tabelasIntermediarias;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gson.reflect.TypeToken;
+
+import app.jm.funcional.model.Dispositivo;
 import app.jm.funcional.model.entidades.vendas.TipoPagamento;
 
 public class TabelaPagamento extends TabelaIntermediaria {
@@ -48,4 +52,10 @@ public class TabelaPagamento extends TabelaIntermediaria {
     public void seTabelaParcelasPagamento(List<TabelaParcelasPagamento>  tabelaParcelasPagamento) {
         this.tabelaParcelasPagamento = tabelaParcelasPagamento;
     }
+    
+
+	@Override
+	public Type typeParaJson() {
+		return new TypeToken<List<TabelaPagamento>>(){}.getType();
+	}
 }

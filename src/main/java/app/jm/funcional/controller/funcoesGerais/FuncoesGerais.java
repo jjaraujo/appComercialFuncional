@@ -300,24 +300,24 @@ public final class FuncoesGerais {
         return paraSql == false ? data.replace("'","") : data ;
     }
 
-    /**@param nomeAtributo - Informe o nome do field na tabela
-     * @param tabela - Informe o objeto tabela onde o valor serÃƒÂ¡ pegado
-     * @return Retorna o valor do field de uma tabela pelo nome*/
-    public static Object getValorFieldDeTabela(String nomeAtributo, Tabela tabela) {
-        
-    	 Class classe = tabela.getClass();
-    	 try {
-  
-            Field f = getFieldDeTabela(nomeAtributo,  tabela);
-            return f.get(tabela);
-            
-        } catch (IllegalAccessException e) {
-     //       Log.e("IllegalAccessException", "NÃƒÆ’Ã‚Â£o foi possÃƒÆ’Ã‚Â­vel encontrar o objeto " + nomeAtributo + " da tabela " + tabela.getNomeTabela(false));
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
+//    /**@param nomeAtributo - Informe o nome do field na tabela
+//     * @param tabela - Informe o objeto tabela onde o valor serÃƒÂ¡ pegado
+//     * @return Retorna o valor do field de uma tabela pelo nome*/
+//    public static Object getValorFieldDeTabela(String nomeAtributo, Tabela tabela) {
+//        
+//    	 Class classe = tabela.getClass();
+//    	 try {
+//  
+//            Field f = getFieldDeTabela(nomeAtributo,  tabela);
+//            return f.get(tabela);
+//            
+//        } catch (IllegalAccessException e) {
+//     //       Log.e("IllegalAccessException", "NÃƒÆ’Ã‚Â£o foi possÃƒÆ’Ã‚Â­vel encontrar o objeto " + nomeAtributo + " da tabela " + tabela.getNomeTabela(false));
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+//    
     /**@param nomeAtributo - Informe o nome do field na tabela
      * @param tabela - Informe o objeto tabela onde o field serÃƒÂ¡ pegado
      * @return Retorna o valor do field de uma tabela pelo nome*/

@@ -2,8 +2,12 @@ package app.jm.funcional.model.entidades.estoque;
 
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+
+import com.google.gson.reflect.TypeToken;
 
 import app.jm.funcional.model.entidades.Entidade;
 import app.jm.funcional.model.entidades.cadastral.pessoas.Fornecedor;
@@ -229,6 +233,9 @@ public class Produto extends Entidade implements Serializable{
         this.cfop = cfop;
     }
 
-    
+    @Override
+	public Type typeParaJson() {
+		return new TypeToken<List<Produto>>(){}.getType();
+	}
     
 }

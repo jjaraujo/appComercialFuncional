@@ -80,7 +80,7 @@ public abstract class FuncoesSql {
 		// verificar a possibilidade de pegar esses nomes direto do map
 		for (int j = 0; j < nomeAtributos.length; j++) {
 			String nome = nomeAtributos[j];
-			Object atributo = FuncoesGerais.getValorFieldDeTabela(nome, tabela);
+			Object atributo =  tabela.getMapAtributos(false).get(nome);
 			if (nome == null) {
 				continue;
 			}

@@ -1,9 +1,13 @@
 package app.jm.funcional.model.entidades.vendas;
 
+import java.lang.reflect.Type;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.reflect.TypeToken;
+
+import app.jm.funcional.model.Dispositivo;
 import app.jm.funcional.model.Tabela;
 
 public class HorariosCaixa extends Tabela {
@@ -113,7 +117,11 @@ public class HorariosCaixa extends Tabela {
 		return horarios;
 	}
 	
-	
+
+	@Override
+	public Type typeParaJson() {
+		return new TypeToken<List<HorariosCaixa>>(){}.getType();
+	}
 
 
 

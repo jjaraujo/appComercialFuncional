@@ -1,9 +1,14 @@
 package app.jm.funcional.model.entidades.vendas;
 
+import java.lang.reflect.Type;
 import java.util.Calendar;
 import java.util.List;
 
+import com.google.gson.reflect.TypeToken;
+
+import app.jm.funcional.controller.NaoUsarNaBase;
 import app.jm.funcional.controller.funcoesGerais.FuncoesGerais;
+import app.jm.funcional.model.Dispositivo;
 import app.jm.funcional.model.dao.IConnection;
 import app.jm.funcional.model.entidades.Entidade;
 import app.jm.funcional.model.entidades.cadastral.pessoas.Cliente;
@@ -26,6 +31,11 @@ public class Venda extends Entidade {
     private double total;
     private double valorTotalAvista;
     private double valorTotalPrazo;
+    private int tipoVenda;
+    @NaoUsarNaBase
+    public static final int TIPO_CAIXA = 1;
+    @NaoUsarNaBase
+    public static final int TIPO_MESA_COMANDA = 2;
 
     public Venda (int numeroMesaComanda){
         this.numeroMesaComanda = numeroMesaComanda;
@@ -170,6 +180,30 @@ public class Venda extends Entidade {
 
 	public void setValorTotalAPrazo(double valorTotalPrazo) {
 		this.valorTotalPrazo = valorTotalPrazo;
+	}
+	
+	
+	
+
+	@Override
+	public Type typeParaJson() {
+		return new TypeToken<List<Venda>>(){}.getType();
+	}
+
+	public double getValorTotalPrazo() {
+		return valorTotalPrazo;
+	}
+
+	public void setValorTotalPrazo(double valorTotalPrazo) {
+		this.valorTotalPrazo = valorTotalPrazo;
+	}
+
+	public int getTipoVenda() {
+		return tipoVenda;
+	}
+
+	public void setTipoVenda(int tipoVenda) {
+		this.tipoVenda = tipoVenda;
 	}
     
 }

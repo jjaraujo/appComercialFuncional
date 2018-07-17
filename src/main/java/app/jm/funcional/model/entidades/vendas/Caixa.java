@@ -1,7 +1,12 @@
 package app.jm.funcional.model.entidades.vendas;
 
+import java.lang.reflect.Type;
 import java.util.Calendar;
+import java.util.List;
 
+import com.google.gson.reflect.TypeToken;
+
+import app.jm.funcional.model.Dispositivo;
 import app.jm.funcional.model.Tabela;
 
 public class Caixa extends Tabela {
@@ -42,5 +47,11 @@ public class Caixa extends Tabela {
 	}
 	public void setValorTotalAPrazo(double valorTotalAPrazo) {
 		this.valorTotalAPrazo = valorTotalAPrazo;
+	}
+	
+
+	@Override
+	public Type typeParaJson() {
+		return new TypeToken<List<Caixa>>(){}.getType();
 	}
 }

@@ -1,10 +1,14 @@
 package app.jm.funcional.model.entidades.contas;
 
+import java.lang.reflect.Type;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gson.reflect.TypeToken;
+
 import app.jm.funcional.model.Tabela;
+import app.jm.funcional.model.entidades.estoque.Grupo;
 
 public class ContaPagar extends Tabela {
 
@@ -16,7 +20,7 @@ public class ContaPagar extends Tabela {
 
  
     @Override
-    public List<Tabela> getListValoresIniciais() {
-        return null;
-    }
+	public Type typeParaJson() {
+		return new TypeToken<List<ContaPagar>>(){}.getType();
+	}
 }

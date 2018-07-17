@@ -1,9 +1,13 @@
 package app.jm.funcional.model.entidades.vendas;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gson.reflect.TypeToken;
+
+import app.jm.funcional.model.Dispositivo;
 import app.jm.funcional.model.Tabela;
 import app.jm.funcional.model.entidades.Entidade;
 
@@ -98,4 +102,10 @@ public class TipoPagamento extends Entidade{
         list.add(fiado);
         return list;
     }
+    
+
+	@Override
+	public Type typeParaJson() {
+		return new TypeToken<List<TipoPagamento>>(){}.getType();
+	}
 }

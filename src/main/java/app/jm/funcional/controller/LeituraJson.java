@@ -69,22 +69,19 @@ public final class LeituraJson {
 		s = s.substring(0, 2).equals("\"\"") ? s.substring(1) : s;
 		s = s.substring(s.length() - 1).equals("\"") ? s.substring(0, s.length() - 1) : s;
 		
-		String nome = s.replace("\"", "").split(":")[0];
-
+		String nome = s.replace("\"", "").split(":")[0].replace("{", "");
+		
+		int tamanhoNomeTabela = s.split(":")[0].length() + 1; // soma a posicao do :
+		s =  s.substring(tamanhoNomeTabela);
+		
         Gson gson = new Gson();
         try{
-        	Tabela tabela = new Produto();
+        	Tabela tabela = TabelasMapeadas.getTabelaForNome(nome, true);
         	        	
-        Type collectionType = new TypeToken<List<Tabela>>(){}.getType();
+        Type collectionType = tabela.typeParaJson();
         
-        try {
-			Class c = Class.forName("java.util.List<app.jm.funcional.model.Tabela>");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
         
-        List<Tabela> listEntidade = gson.fromJson(s, collectionType);
+        List listEntidade = gson.fromJson(s, collectionType);
         return  listEntidade;
         } catch(JsonSyntaxException e){
 
@@ -102,8 +99,8 @@ public final class LeituraJson {
         	}
         	String json =  gson.toJson(list,type);
         	
-        	return  "\""+list.get(0).getNomeTabela(true) + "':" + json.replace("[","").replace("]","").replace("\"", "'") + "\"";
-    
+        	return  "\""+list.get(0).getNomeTabela(true) + "':" + json.replace("\"", "'") + "\"";
+        	
         } catch(JsonSyntaxException e){
             return null;
         }

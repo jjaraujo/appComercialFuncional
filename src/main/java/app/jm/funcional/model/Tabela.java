@@ -3,6 +3,7 @@ package app.jm.funcional.model;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -39,6 +40,8 @@ public abstract class Tabela implements Serializable {
 	private boolean isPegandoAtributosSuperClass;
 	
 	public long idAnterior;
+	
+	public abstract Type typeParaJson();
 
 	public boolean getPrecisaRegistroInicial() {
 		return false;
